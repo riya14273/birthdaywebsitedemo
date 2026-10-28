@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Birthday Party Surprise Generator 🎂✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- html2canvas for Greeting Card image download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="theme-gold" id="appBody">
+
+  <!-- Party Wear Ambient Moving Spotlights -->
+  <div class="spotlight-cone-1" aria-hidden="true"></div>
+  <div class="spotlight-cone-2" aria-hidden="true"></div>
+
+  <!-- Floating Atmosphere Elements -->
+  <div class="ambient-stars" id="ambientStars" aria-hidden="true"></div>
+  <div class="ambient-balloons" id="ambientBalloons" aria-hidden="true"></div>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Sticky Global Music Control Bar with Equalizer -->
+  <nav class="top-nav" aria-label="Global controls">
+    <div class="logo">
+      <span class="logo-icon">👑</span>
+      <span class="logo-text">VIP WishParty</span>
+    </div>
+    <div class="nav-controls">
+      <button type="button" id="toggleMusicBtn" class="music-pill-btn" aria-label="Toggle birthday background music">
+        <span class="music-icon" id="musicIcon">🎵</span>
+        <span class="music-label" id="musicLabel">Play Music</span>
+        <span class="sound-bars" aria-hidden="true">
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-wrapper">
+
+    <!-- VIEW 1: CREATOR & HOME SCREEN -->
+    <section id="creatorSection" class="view-panel active-panel">
+      <!-- Hero Header -->
+      <header class="hero-header text-center">
+        <div class="badge-pill">🍾 VIP Party Wear Edition 🍾</div>
+        <h1 class="hero-title">Create an Unforgettable <br><span class="gradient-text glow">Birthday Celebration!</span> 🎂✨</h1>
+        <p class="hero-subtitle">Surprise the birthday star! Fill their name and photo once — they will directly receive their complete celebration page with music, cake & surprise without filling anything!</p>
+      </header>
+
+      <!-- Interactive Studio Grid (Form + Live Card Preview) -->
+      <div class="studio-grid">
+        
+        <!-- Customization Form Card -->
+        <div class="glass-card form-card">
+          <div class="card-header">
+            <h2>✨ Customize Birthday Star's Surprise</h2>
+            <p>Enter the details below. A direct link will be created for them.</p>
+          </div>
+
+          <form id="birthdayForm" novalidate>
+            <!-- 1. Person Name -->
+            <div class="form-group">
+              <label for="personName">Birthday Person's Name <span class="required">*</span></label>
+              <div class="input-icon-wrapper">
+                <span class="field-icon">👑</span>
+                <input 
+                  type="text" 
+                  id="personName" 
+                  name="personName" 
+                  placeholder="e.g., Aryan or Priya" 
+                  maxlength="40" 
+                  required 
+                  autocomplete="off"
+                >
+              </div>
+              <small class="error-msg" id="nameError">Please enter the birthday person's name.</small>
+            </div>
+
+            <!-- 2. Photo Upload -->
+            <div class="form-group">
+              <label for="photoInput">Upload Their Photo <span class="required">*</span></label>
+              <div class="upload-dropzone" id="dropZone" tabindex="0" role="button" aria-label="Click or drag to upload birthday photo">
+                <input type="file" id="photoInput" name="photoInput" accept="image/*" class="visually-hidden">
+                <div class="upload-content" id="uploadPlaceholder">
+                  <div class="upload-icon-circle">📸</div>
+                  <p class="upload-title"><strong>Click to upload photo</strong> or drag & drop</p>
+                  <span class="upload-hint">PNG, JPG, WEBP, or GIF</span>
+                </div>
+                <div class="upload-success-state" id="uploadSuccess" style="display: none;">
+                  <span class="check-icon">✓</span>
+                  <span class="uploaded-filename" id="uploadedFileName">photo.jpg</span>
+                  <button type="button" class="btn-change-photo" id="btnChangePhoto">Change</button>
+                </div>
+              </div>
+              <small class="error-msg" id="photoError">Please select a photo of the birthday star.</small>
+            </div>
+
+            <!-- 3. Choose Background Music Track -->
+            <div class="form-group">
+              <div class="label-row">
+                <label>🎵 Select Song / Melody</label>
+                <button type="button" class="btn-preview-song" id="btnPreviewSelectedSong">▶️ Preview Song</button>
+              </div>
+              <div class="song-selector" role="radiogroup" aria-label="Select background birthday melody">
+                <label class="song-option active">
+                  <input type="radio" name="songRadio" value="arijit" checked>
+                  <span class="song-dot">🎸</span>
+                  <div class="song-details">
+                    <span class="song-title">Arijit Singh Ballad Style</span>
+                    <span class="song-sub">Romantic, soulful acoustic melody</span>
+                  </div>
+                </label>
+                <label class="song-option">
+                  <input type="radio" name="songRadio" value="party">
+                  <span class="song-dot">🍾</span>
+                  <div class="song-details">
+                    <span class="song-title">Club Party Beat</span>
+                    <span class="song-sub">High energy, dance & celebration</span>
+                  </div>
+                </label>
+                <label class="song-option">
+                  <input type="radio" name="songRadio" value="piano">
+                  <span class="song-dot">🎹</span>
+                  <div class="song-details">
+                    <span class="song-title">Grand Birthday Piano</span>
+                    <span class="song-sub">Sweet & classic Happy Birthday tune</span>
+                  </div>
+                </label>
+                <label class="song-option custom-song-option" id="customSongOption">
+                  <input type="radio" name="songRadio" value="custom">
+                  <span class="song-dot">📁</span>
+                  <div class="song-details">
+                    <span class="song-title">Upload Any Bollywood / MP3</span>
+                    <span class="song-sub" id="customSongLabel">Pick any song file from your device</span>
+                  </div>
+                </label>
+              </div>
+              <input type="file" id="customAudioInput" accept="audio/*" class="visually-hidden">
+            </div>
+
+            <!-- 4. Birthday Message -->
+            <div class="form-group">
+              <div class="label-row">
+                <label for="birthdayMessage">Heartfelt Birthday Wishes <span class="required">*</span></label>
+                <button type="button" class="btn-text-spark" id="btnQuickWishes" title="Insert a beautiful pre-written wish">
+                  ✨ Suggest Message
+                </button>
+              </div>
+              <textarea 
+                id="birthdayMessage" 
+                name="birthdayMessage" 
+                rows="4" 
+                placeholder="Write your special birthday message here..." 
+                maxlength="500" 
+                required
+              ></textarea>
+              <div class="char-counter"><span id="charCount">0</span>/500</div>
+              <small class="error-msg" id="messageError">Please write a birthday wish message.</small>
+            </div>
+
+            <!-- 5. Choose Theme -->
+            <div class="form-group">
+              <label>Choose Party Wear Theme</label>
+              <div class="theme-selector" role="radiogroup" aria-label="Choose celebration theme">
+                <label class="theme-option active" data-theme="theme-gold">
+                  <input type="radio" name="themeRadio" value="theme-gold" checked>
+                  <span class="color-dot gold"></span>
+                  <span class="theme-name">Midnight Gold VIP</span>
+                </label>
+                <label class="theme-option" data-theme="theme-purple">
+                  <input type="radio" name="themeRadio" value="theme-purple">
+                  <span class="color-dot purple"></span>
+                  <span class="theme-name">Neon Club Night</span>
+                </label>
+                <label class="theme-option" data-theme="theme-blue">
+                  <input type="radio" name="themeRadio" value="theme-blue">
+                  <span class="color-dot blue"></span>
+                  <span class="theme-name">Disco Ocean</span>
+                </label>
+                <label class="theme-option" data-theme="theme-floral">
+                  <input type="radio" name="themeRadio" value="theme-floral">
+                  <span class="color-dot floral"></span>
+                  <span class="theme-name">Rose Champagne</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 6. Hidden Bonus Secret Message / Surprise -->
+            <div class="form-group">
+              <label for="secretSurprise">Secret Gift Box Note (Revealed upon clicking gift box)</label>
+              <input 
+                type="text" 
+                id="secretSurprise" 
+                placeholder="e.g., A special dinner treat awaits you tonight! 🎁🥂" 
+                value="You are one of the most incredible souls in the universe! May this year bring endless success, love, and wild celebrations! 💖🥂"
+              >
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+              <button type="submit" id="generateBtn" class="btn-primary-glow">
+                <span class="btn-sparkle">🍾</span>
+                <span>Open & Generate Surprise Page</span>
+                <span class="btn-arrow">➔</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Real-time Live Preview Card -->
+        <div class="glass-card preview-card-sticky">
+          <div class="card-header preview-header">
+            <span class="live-pill"><span class="pulse-dot"></span> Live Preview</span>
+            <h3>How it will look</h3>
+          </div>
+
+          <div class="mini-preview-container" id="miniPreviewContainer">
+            <div class="mini-frame-wrapper">
+              <div class="mini-photo-frame" id="miniPhotoFrame">
+                <img id="livePreviewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Preview Photo">
+                <div class="frame-crown">👑</div>
+              </div>
+            </div>
+            <h4 class="mini-name" id="livePreviewName">Aryan</h4>
+            <p class="mini-badge">VIP Birthday Star ⭐</p>
+            <div class="mini-quote-bubble">
+              <p id="livePreviewMsg">"Wishing you a day overflowing with warmth, laughter, and endless happy surprises! Happy Birthday!"</p>
+            </div>
+            <div class="mini-cake-art" aria-hidden="true">🎂 🍾 🎁</div>
+            <div class="preview-song-badge" id="previewSongBadge">🎵 Song: Arijit Singh Ballad Style</div>
+            <div class="preview-theme-indicator" id="previewThemeBadge">Theme: Midnight Gold VIP</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: COUNTDOWN REVEAL CURTAIN (Dramatic Reveal Transition) -->
+    <section id="countdownModal" class="countdown-overlay" aria-hidden="true" style="display: none;">
+      <div class="countdown-box">
+        <div class="countdown-cake-bounce">🍾🎂</div>
+        <p class="countdown-sub">Setting the party lights & playing music...</p>
+        <div class="countdown-number" id="countdownTimer">3</div>
+        <p class="countdown-tip">Get ready for the celebration! ✨</p>
+      </div>
+    </section>
+
+    <!-- VIEW 3: PERSONALIZED BIRTHDAY SURPRISE PAGE (PARTY WEAR) -->
+    <section id="surpriseSection" class="view-panel" style="display: none;">
+      
+      <!-- Greeting Banner -->
+      <div class="surprise-banner text-center">
+        <div class="confetti-poppers" aria-hidden="true">🎉 🍾 🎊 🥂 🎉</div>
+        <h1 class="surprise-headline animate-pop" id="surpriseHeadline">
+          Happy Birthday, <span class="highlight-name" id="surpriseName">Aryan</span>! 🎂
+        </h1>
+        <p class="surprise-date-tag">Tonight is your VIP Celebration! Shine Bright! ✨</p>
+      </div>
+
+      <!-- Main Showcase Container (Also captures cleanly for Image Card Download) -->
+      <div class="surprise-showcase-box" id="captureCard">
+        
+        <!-- Decorated Animated Photo Frame -->
+        <div class="hero-photo-stage">
+          <div class="magical-photo-ring">
+            <div class="sparkle-ring-glow"></div>
+            <div class="photo-crown-badge">👑</div>
+            <div class="img-frame-glass">
+              <img id="surpriseImg" src="" alt="Birthday Star Photo">
+            </div>
+            <div class="photo-decor-balloon left-balloon">🎈</div>
+            <div class="photo-decor-balloon right-balloon">🎈</div>
+          </div>
+        </div>
+
+        <!-- Animated Birthday Cake with Clickable Blow Candles -->
+        <div class="cake-interaction-stage">
+          <div class="birthday-cake" id="interactiveCake" title="Click the cake or tap candles to make a wish!">
+            <!-- Candles -->
+            <div class="candles-row">
+              <div class="candle candle-1">
+                <div class="flame" id="flame1"></div>
+                <div class="stick"></div>
+              </div>
+              <div class="candle candle-2">
+                <div class="flame" id="flame2"></div>
+                <div class="stick"></div>
+              </div>
+              <div class="candle candle-3">
+                <div class="flame" id="flame3"></div>
+                <div class="stick"></div>
+              </div>
+            </div>
+            <!-- Cake Layers -->
+            <div class="cake-tier tier-top">
+              <div class="frosting-drippings"></div>
+              <div class="strawberry-decor">🍓 🍓 🍓</div>
+            </div>
+            <div class="cake-tier tier-middle"></div>
+            <div class="cake-tier tier-bottom"></div>
+            <div class="cake-plate"></div>
+          </div>
+          <p class="cake-hint">🎂 Tap the cake to blow out candles and make a wish!</p>
+        </div>
+
+        <!-- Personalized Heartfelt Wish Card -->
+        <div class="personalized-message-card">
+          <div class="card-pin">✨</div>
+          <h2 class="card-wishes-title">Special Birthday Wishes</h2>
+          <div class="message-quote-body">
+            <span class="big-quote open-quote">“</span>
+            <p id="surpriseMessageText" class="wish-message-body"></p>
+            <span class="big-quote close-quote">”</span>
+          </div>
+          <div class="signature-line">
+            <span>Made with unlimited love ❤️</span>
+          </div>
+        </div>
+
+        <!-- Interactive Surprise Mystery Gift Box -->
+        <div class="gift-surprise-section">
+          <button type="button" class="btn-gift-surprise" id="openGiftBtn" aria-expanded="false">
+            <span class="gift-box-anim">🎁</span>
+            <span class="gift-btn-text">Click to Open Your VIP Gift Box!</span>
+            <span class="gift-sparkles">✨</span>
+          </button>
+
+          <!-- Hidden surprise reveal modal/card -->
+          <div class="secret-gift-revealed" id="secretGiftReveal" style="display: none;">
+            <div class="gift-revealed-inner">
+              <div class="gift-pop-icon">🥳🍾🎉</div>
+              <h3>Surprise Message Just For You!</h3>
+              <p id="secretGiftText" class="secret-text-content"></p>
+              <div class="golden-confetti-row">🌟 💖 🥂 🎂 🎈 🌟</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Floating Bar (Play Music, Download Card, Share, Create Another) -->
+      <div class="surprise-actions-bar">
+        <button type="button" class="action-btn btn-action-music" id="surpriseMusicBtn">
+          <span class="icon">🎶</span>
+          <span class="text">Play Music</span>
+        </button>
+
+        <button type="button" class="action-btn btn-action-confetti" id="burstConfettiBtn">
+          <span class="icon">🎊</span>
+          <span class="text">Blast Confetti</span>
+        </button>
+
+        <button type="button" class="action-btn btn-action-download" id="downloadCardBtn">
+          <span class="icon">📥</span>
+          <span class="text">Download Wish Card</span>
+        </button>
+
+        <button type="button" class="action-btn btn-action-share" id="shareWishBtn">
+          <span class="icon">🔗</span>
+          <span class="text">Send Surprise Link to Birthday Star</span>
+        </button>
+
+        <button type="button" class="action-btn btn-action-back" id="createAnotherBtn">
+          <span class="icon">✏️</span>
+          <span class="text">Edit / Create Another</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Share Link Modal -->
+  <div class="share-modal-overlay" id="shareModal" style="display: none;">
+    <div class="share-modal-card">
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💌 🎁</div>
+      <h3>Send This Link To Birthday Star!</h3>
+      <p>When they click this link on WhatsApp or Instagram, this exact surprise page with their photo, name, song & wishes will open directly for them! They don't have to fill anything!</p>
+      <div class="share-input-group">
+        <input type="text" id="shareUrlInput" readonly>
+        <button type="button" class="btn-copy-link" id="copyShareUrlBtn">Copy Link</button>
+      </div>
+      <button type="button" class="btn-close-modal" id="closeShareModalBtn">Close</button>
+    </div>
+  </div>
+
+  <!-- Notification Toast Modal -->
+  <div class="toast-notification" id="toastNotice" role="alert" aria-live="assertive">
+    <span class="toast-icon" id="toastIcon">🎉</span>
+    <span class="toast-message" id="toastMessage">Celebration started!</span>
+  </div>
+
+  <!-- Audio Base64 data & Script -->
+  <script src="audio-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
